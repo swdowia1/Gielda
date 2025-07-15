@@ -1,11 +1,13 @@
 using Giel.Data;
+using Giel.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 var culture = new CultureInfo("pl-PL");
 CultureInfo.DefaultThreadCurrentCulture = culture;
 CultureInfo.DefaultThreadCurrentUICulture = culture;
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddHttpClient<NbpApiService>();
+builder.Services.AddScoped<NbpApiService>();
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -24,5 +26,10 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
+//using (var scope = app.Services.CreateScope())
+//{
+//    var service = scope.ServiceProvider.GetRequiredService<NbpApiService>();
+//    await service.FetchUsdRatesLastMonthAsync();
+//}
 
 app.Run();

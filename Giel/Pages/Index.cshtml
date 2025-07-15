@@ -46,3 +46,24 @@
 }
     </tbody>
 </table>
+<canvas id="chart" width="800" height="400"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('chart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.CurrencyRate.Select(x => x.Date.ToString("yyyy-MM-dd")))),
+                datasets: [{
+                    label: 'Kurs USD',
+                    data: @Html.Raw(Json.Serialize(Model.CurrencyRate.Select(x => x.Rate))),
+                    borderColor: 'blue',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            }
+        });
+    </script>
+}
