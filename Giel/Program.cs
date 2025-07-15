@@ -8,6 +8,7 @@ CultureInfo.DefaultThreadCurrentUICulture = culture;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient<NbpApiService>();
 builder.Services.AddScoped<NbpApiService>();
+builder.Services.AddScoped<PredictionService>();
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<AppDbContext>(options =>

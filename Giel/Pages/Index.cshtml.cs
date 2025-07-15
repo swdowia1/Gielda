@@ -7,23 +7,30 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Giel.Data;
 using Giel.Models;
+using Giel.Services;
 
 namespace Giel.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly Giel.Data.AppDbContext _context;
+       
+        private NbpApiService nbpApiService;
 
-        public IndexModel(Giel.Data.AppDbContext context)
+        public IndexModel(NbpApiService nbpApiService)
         {
-            _context = context;
+            this.nbpApiService = nbpApiService;
         }
 
         public IList<CurrencyRate> CurrencyRate { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            CurrencyRate = await _context.CurrencyRates.ToListAsync();
+            CurrencyRate = await nbpApiService.GetAllRatesAsync();
         }
-    }
+        public async Task<IActionResult> OnPostFetchTodayRateAsync()
+        { 
+            await nbpApiService.FetchTodayUsdRateAsync();
+            return RedirectToPage(); 
+        }
+     }
 }

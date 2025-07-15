@@ -1,0 +1,54 @@
+﻿@page
+@model Giel.Pages.PredyktModel
+<h2>Historia i prognoza kursu USD</h2>
+
+<canvas id="forecastChart" width="900" height="400"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('forecastChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.Labels)),
+                datasets: [
+                    {
+                        label: 'Kurs historyczny',
+                        data: @Html.Raw(Json.Serialize(Model.HistoryRates)),
+                        borderColor: 'blue',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: false
+                    },
+                    {
+                        label: 'Prognoza',
+                        data: (new Array(@Model.HistoryRates.Count)).fill(null).concat(@Html.Raw(Json.Serialize(Model.ForecastRates))),
+                        borderColor: 'green',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        tension: 0.3,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Kurs (PLN)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Data'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}
