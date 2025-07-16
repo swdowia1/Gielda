@@ -1,3 +1,4 @@
+using Giel.BackGround;
 using Giel.Data;
 using Giel.Services;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient<NbpApiService>();
 builder.Services.AddScoped<NbpApiService>();
 builder.Services.AddScoped<PredictionService>();
+
+// backdroudn service
+//builder.Services.AddHostedService<BackgroundRateService>();
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<AppDbContext>(options =>
